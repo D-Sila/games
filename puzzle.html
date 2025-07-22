@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Block Puzzle Game</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
+    #game {
+      display: grid;
+      grid-template-columns: repeat(10, 30px);
+      grid-template-rows: repeat(10, 30px);
+      gap: 2px;
+      margin-bottom: 20px;
+    }
+    .cell {
+      width: 30px;
+      height: 30px;
+      background: white;
+      border: 1px solid #ccc;
+    }
+    .cell.filled {
+      background: #4caf50;
+    }
+    #instructions {
+      max-width: 600px;
+      background: white;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Block Puzzle Game</h1>
+  <div id="instructions">
+    <h2>How to Use:</h2>
+    <ol>
+      <li>Open this HTML file in a modern web browser.</li>
+      <li>Watch blocks automatically drop from the top.</li>
+      <li>The block will fall straight down into the lowest available cell in its column.</li>
+      <li>This version drops one block at a time randomly and fills the grid.</li>
+    </ol>
+  </div>
+  <div id="game"></div>
+  <script>
+    const gameBoard = document.getElementById("game");
+    const grid = Array.from({ length: 10 }, () => Array(10).fill(false));
+
+    function createBoard() {
+      gameBoard.innerHTML = '';
+      for (let y = 0; y < 10; y++) {
+        for (let x = 0; x < 10; x++) {
+          const cell = document.createElement("div");
+          cell.classList.add("cell");
+          if (grid[y][x]) cell.classList.add("filled");
+          gameBoard.appendChild(cell);
+        }
+      }
+    }
+
+    function dropBlock() {
+      const col = Math.floor(Math.random() * 10);
+      for (let row = 9; row >= 0; row--) {
+        if (!grid[row][col]) {
+          grid[row][col] = true;
+          break;
+        }
+      }
+      createBoard();
+    }
+
+    createBoard();
+    setInterval(dropBlock, 1000); // drop a block every second
+  </script>
+</body>
+</html>
